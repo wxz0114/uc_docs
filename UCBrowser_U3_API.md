@@ -25,10 +25,10 @@ U3内核扩展接口定义
 #####3.1.1.规范状态
 http://www.w3.org/TR/screen-orientation/
 #####3.1.2.定义
-提供对屏幕方向特性的判断，事件及操纵，包括：
-1. 定义screen对象，可读取当前屏幕的方向
-2. 通过screen对象可对屏幕方向进行设置
-3. 定义屏幕方向改变时的事件处理函数。
+提供对屏幕方向特性的判断，事件及操纵，包括：<br>
+1. 定义screen对象，可读取当前屏幕的方向<br>
+2. 通过screen对象可对屏幕方向进行设置<br>
+3. 定义屏幕方向改变时的事件处理函数<br>
 ```javascript
 interface screen {
 readonly attribute DOMString orientation;
