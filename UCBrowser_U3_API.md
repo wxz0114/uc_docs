@@ -146,3 +146,83 @@ Interface control{
 手势禁止时，在当前页面中手势事件应传递给网页进行处理。通过以下方式达到本页面时会导致无法继续使用该操作：<br>
 1. 使用双指切换从另一个tab切换到被禁止手势事件的当前页面<br>
 2. 使用单指前进后退时遇到被禁止手势事件的当前页面<br>
+<br>
+<br>
+##4.排版扩展
+###4.1.xhtml适应屏幕排版
+####4.1.1.定义
+适应屏幕排版是UC浏览器的一大特色，为广大用户所喜爱，可以有效的避免出现左右滚动条，减少用户的操作次数。但对于xhtml，在小屏幕上的缩放是通过放大缩小显示区域来实现的，使得无法通过适应屏幕来提供更好的视觉效果。<br>
+UC浏览器在标准排版效果实现的基础上，提供适应屏幕的排版方式，可以使得xhtml页面在屏幕中进行缩放操作时保持不出现左右滚动条。<br>
+要使用这个功能，只需要在viewport中使用uc-fitscreen进行设置即可，默认值为uc-fitscreen=no，即不启用此功能，此时浏览器的缩放行为与标准一致。当设置为uc-fitscreen=yes，则当进行缩放操作时，仅放大图片和文字等页面元素，但不放大屏幕宽度，从而避免了左右滚动条的产生。<br>
+####4.1.2.示例
+```javascript
+<meta name="viewport" content="width=device-width, uc-fitscreen=yes"/>
+<meta name="viewport" content="initial-scale=1.0, uc-fitscreen=yes"/>
+```
+####4.1.3.Meta标签
+```javascript
+<meta name="viewport" content="uc-fitscreen=yes"/>
+```
+请根据页面要求配合viewport的其他属性一同使用。
+####4.1.4.操作设计
+本扩展仅限制了缩放时的有效可视区域为屏幕宽度，并没有对排版方式及规则进行调整，因此当放大达到最大时，可能会在一些表格行中出现少量字体重叠。这时可以通过设定maximum-scale避免太大的放大比例来规避。<br>
+基于设计的考虑，当一个页面内出现多个viewport定义时，后出现的viewport将覆盖前面的定义，因此uc-fitscreen这个属性应该和页面的其他viewport属性一起定义使用，而不能单独使用。例如：<br>
+```javascript
+<!DOCTYPE html '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'>
+<meta name="viewport" content="width=device-width,uc-fitscreen=yes"/>
+```
+或
+```javascript
+<!DOCTYPE html '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'>
+<meta name="viewport" content="initial-scale=1.0,uc-fitscreen=yes"/>
+```
+###4.2.排版模式
+####4.2.1.定义
+Uc浏览器提供两种排版模式，分别是适屏模式及标准模式，其中适屏模式简化了一些页面的处理，使得页面内容更适合进行页面阅读、节省流量及响应更快，而标准模式则能按照标准规范对页面进行排版及渲染。通过新定义的标签及js api接口，可以让网页设计者执行决定采用何种排版方式向用户展现页面。
+####4.2.2.标签
+Meta标签
+```javascript
+<meta name="layoutmode" content="fitscreen/standard" />
+```
+Js API接口
+* 定义当前排版模式的属性值
+```javascript
+interface layout{
+readonly attribute DOMString layoutmode;
+};
+```
+* 定义了
+Layoutmode的取值为fitscreen(对应适应屏幕)或standard(对应标准模式)<br>
+Onlayoutchange函数将在用户通过菜单切换排版方式时被调用，对每个窗口通知其网页排版发生了变化。<br>
+当时用meta标签定义了该页面的排版方式后，该页面的排版将不再受用户的菜单排版方式选择影响。<br>
+####4.2.3.示例
+* 设置页面排版为标准模式
+```javascript
+<html>
+ <meta name="layoutmode" content="standard"/>
+ <body>
+  本页面将以标准模式进行排版，用户菜单中的缩放/适屏选择无效
+ </body>
+</html>
+```
+* 检测排版模式切换，提示用户
+```javascript
+<html>
+ <meta name="layoutmode" content="fitscreen"/>
+ <body>
+  <script type="text/javascript>
+Function handlelayout(newmode)
+{
+  confirm("当前页面排版固定为适屏模式，切换到标准模式请点击xxx链接");
+ }
+    Layout.onlayoutchange = handlelayout;
+  </script>
+ </body>
+</html>
+```
+####4.2.4.说明
+当不设置layoutmode时，排版方式按用户配置的浏览器选项决定，且可随用户菜单变化而更改。<br>
+Meta设置对当前页面生效，包括当前页面下属的iframe/frame，但不影响前进后退的页面<br>
+非当前窗口的事件回调函数将实时产生<br>
+页面内的Frame/iframe中的排版meta属性不生效。<br>
+排版切换的事件将通知到页面中的frame/iframe<br>
