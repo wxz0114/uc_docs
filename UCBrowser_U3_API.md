@@ -210,7 +210,7 @@ Onlayoutchange函数将在用户通过菜单切换排版方式时被调用，对
 <html>
  <meta name="layoutmode" content="fitscreen"/>
  <body>
-  <script type="text/javascript>
+  <script type="text/javascript">
 Function handlelayout(newmode)
 {
   confirm("当前页面排版固定为适屏模式，切换到标准模式请点击xxx链接");
@@ -226,3 +226,27 @@ Meta设置对当前页面生效，包括当前页面下属的iframe/frame，但�
 非当前窗口的事件回调函数将实时产生<br>
 页面内的Frame/iframe中的排版meta属性不生效。<br>
 排版切换的事件将通知到页面中的frame/iframe<br>
+###4.3.夜间模式
+####4.3.1.定义
+夜间模式是UC浏览器的特色功能，帮助用户在低亮度或黑暗情况下更舒适的进行页面浏览。由于基于网页的应用愈加复杂，由浏览器实现的单一夜间模式不一定能够适应所有情况(例如游戏应用)，因此UC浏览器允许网页设计者对其设计的页面禁用浏览器的夜间模式，自行设计更适合用户使用的夜间模式。
+####4.3.2.
+Meta标签：<br>
+```javascript
+<meta name="nightmode" content="enable/disable"/>
+```
+Content=disable时的含义：<br>
+* 禁止页面使用uc浏览器自定义的夜间模式，进入夜间模式时的表现同日间模式
+Content=enable时的含义：
+* 允许页面使用uc浏览器自定义的夜间模式，用于取消<meta name="nightmode" content="disable"/>时的效果
+Js接口：
+* 定义夜间模式的事件处理函数
+* 定义夜间模式的属性值
+```javascript
+interface layout{
+readonly attribute DOMString displaymode;
+    Function onnightmodechange(DOMString newmode);
+};
+```
+displaymode是一个以页面为单位的变量，取值为day/night，分别对应日间模式及夜间模式，与整个浏览器的夜间模式取值相同。<br>
+在浏览器进入或退出夜间模式时，向所有窗口发出该事件，并调用onnightmodechange函数，传入参数为将要变更的displayMode值：<br>
+####4.3.3.示例
