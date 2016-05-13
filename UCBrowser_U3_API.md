@@ -53,4 +53,17 @@ readonly attribute DOMString orientation;
   </script>
 </html>
 ```
-#####3.1.4.
+#####3.1.4.Meta标签
+为了简化调用，可以通过meta对屏幕方向进行设定，效果与使用js调用相关接口是一致的。<br>
+```javascript
+<meta name="screen-orientation" content="portrait/landscape">
+```
+等同于<br>
+```javascript
+screen.lockOrientation("portrait/landscape");
+```
+#####3.1.5.操作设计
+Tab切换：动画按当前也方向，切换后页面按该页面<br>
+前进后退：动画按当前页方向，切换后页面按该页面方向进行方向切换显示<br>
+系统旋屏设置：本功能仅改变一次屏幕设置，并不永久生效。如果用户通过浏览器->设置->转屏设置对屏幕进行设置，则屏幕依据设置变更进行变化，并相应触发屏幕方向事件。
+#####3.1.6.版本变更历史
