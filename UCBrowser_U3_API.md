@@ -229,8 +229,7 @@ Meta设置对当前页面生效，包括当前页面下属的iframe/frame，但�
 ###4.3.夜间模式
 ####4.3.1.定义
 夜间模式是UC浏览器的特色功能，帮助用户在低亮度或黑暗情况下更舒适的进行页面浏览。由于基于网页的应用愈加复杂，由浏览器实现的单一夜间模式不一定能够适应所有情况(例如游戏应用)，因此UC浏览器允许网页设计者对其设计的页面禁用浏览器的夜间模式，自行设计更适合用户使用的夜间模式。
-####4.3.2.
-Meta标签：<br>
+####4.3.2.Meta标签：
 ```javascript
 <meta name="nightmode" content="enable/disable"/>
 ```
@@ -250,3 +249,188 @@ readonly attribute DOMString displaymode;
 displaymode是一个以页面为单位的变量，取值为day/night，分别对应日间模式及夜间模式，与整个浏览器的夜间模式取值相同。<br>
 在浏览器进入或退出夜间模式时，向所有窗口发出该事件，并调用onnightmodechange函数，传入参数为将要变更的displayMode值：<br>
 ####4.3.3.示例
+* 禁止进入夜间模式
+```javascript
+<!DOCTYPE html>
+<html>
+  <meta name="nightmode" content="disable"/>
+  <body>
+	   <p>这个页面不会进入夜间模式。
+	<body>
+</html>
+```
+* 提示用户进入夜间模式
+```javascript
+<!DOCTYPE html>
+<html>
+  <body>
+  <p>当前的夜间模式：<div id="isNight"><script>document.write(layout.displaymode)</script></div>
+  <script language="text/javascript">
+function handlenightmode(newmode)
+{
+  ret_val = true;
+  //当前模式为off，即正在转换为夜间模式
+  if (newmode == "night"){
+   alert("进入了夜间模式");
+	}
+  document.getElementById("isNight").innerHTML= layout.displaymode;
+}
+layout.onnightmodechange = handlenightmode;
+}
+    
+  </script>
+  </body>
+</html>
+```
+* 自定义夜间模式
+```javascript
+<!DOCTYPE html>
+<html>
+	<meta name="nightmode" content="disable"/>
+  <body>
+  <p>当前的夜间模式：<div id="isNight"><script>document.write(layout.nightmode)</script></div>
+  <script language="text/javascript">
+function handlenightmode(newmode)
+{
+  ret_val = false;
+  //从日间模式切换到夜间模式
+  if (layout.nightmode == "night")
+  {
+   alert("正在使用页面自定义的夜间模式");
+   //切换到页面自定义的夜间模式样式表
+  }
+  else //从夜间模式切换到日间模式
+  {
+    //取消页面自定义的夜间模式样式表
+  }
+ }
+ layout.onnightmodechange = handlenightmode;       
+ document.getElementById("isNight").innerHTML= layout.nightmode;
+}    
+  </script>
+  </body>
+</html>
+```
+####4.3.4.说明
+页面内的Frame/iframe中的夜间模式的meta不生效。<br>
+用户的夜间模式切换事件将通知到页面内的frame/iframe<br>
+###4.4.强制图片显示
+####4.4.1.定义
+为了节省流量及加快速度，UC为用户提供了无图模式，在实际使用中存在页面中的图片是不可缺少的，例如验证码，地图等。通过强制图片显示的功能可以保证图片显示不受用户的设置影响。<br>
+此功能分为两部分：整页强制图片显示及单个图片强制显示<br>
+整页强制图片显示，通过meta标签通知浏览器该页内所有图片均需加载，用户设置的无图选项失效。<br>
+单个图片强制显示，为img标签增加一个属性，该属性强制对应图片对象进行加载，忽视用户设置的无图选项，但不影响页面内的其他图片对象处理。<br>
+####4.4.2.标签
+Meta标签：
+```javascript
+<meta name="imagemode" content="force"/>
+```
+Img标签：
+```javascript
+<img src="..." show="force">
+```
+####4.4.3.示例
+* 整页强制图片显示
+```javascript
+<html>
+  <meta name="imagemode" content="force"/>
+  <body>
+  <img src="sample1.jpg"/>
+  <img src="sample2.jpg"/>
+  <img src="sample3.jpg"/>
+  <p>以上图片不会受无图模式影响，强制显示
+  </body>
+</html>
+```
+* 单幅图片强制显示
+```javascript
+<html>
+ <body>
+  <img src="sample1.jpg"/>
+  <p>这个图片在无图模式下会不显示
+  <img src="sample2.jpg" show="force"/>
+  <p>这个图片在无图模式下也会显示
+  <img src="sample3.jpg" id=testimg/>
+  <a href="javascript:document.getElementById("testimg").show="force";">设置强制显示</a>
+  <p>这个图片在点击按钮后会强制显示
+ </body>
+</html>
+```
+####4.4.4.说明
+在应用模式下，自动强制页面进入整页图片强制显示<br>
+整页图片强制显示仅对当前页面生效，对页面内的iframe/frame不生效，也不影响前进后退的页面<br>
+####4.4.5.极速模式控制
+<br>
+<br>
+##5.其他
+###5.1.发送到桌面
+对于以下的标签，在用户通过添加书签->发至桌面快捷方式时，联网获取对应的图片获取并在桌面中使用此图片显示（兼容了safari手机浏览器的定义）
+```javascript
+   <link rel="apple-touch-icon-precomposed" sizes=”57x57” href="images/icon.png" />
+   <link rel="apple-touch-icon" sizes=”72x72” href="images/icon.png" />
+```
+在用户触发“发至桌面”的菜单操作后，即触发联网获取size最大的图片。在未获取到图片前，可以先显示默认图片；获取完成后再将获取到的图片更新到桌面。如果获取不到或者没有此特殊标签，仍然使用默认的桌面书签图标。
+###5.2.应用模式
+####5.2.1.定义
+应用模式是为方便web应用及游戏开发者设置的综合开关，通过meta标签进行指示打开，当进入应用模式时，浏览器将自动调整以下参数：
+| 参数  |  状态 |
+| ---------- | -----------|
+| 全屏   |  生效，可通过meta或js api调用退出全屏  |
+| 长按菜单   |  失效，可通过js api调用重新生效 |
+|   浏览器默认手势 |  失效，可通过js api调用重新生效 |
+|  排版模式  | 标准模式，可通过meta或js api调用设置其他排版模式  |
+|   强制图片显示 | 失效  |
+|  夜间模式  | 失效，可通过meta或js api调用启用夜间模式  |
+####5.2.2.标签
+通过meta标签可调用应用模式
+```javascript
+<meta name="browsermode" content="application"/>
+```
+####5.2.3.示例
+* 进入应用模式
+```javascript
+<html>
+ <meta name="browsermode" content="application"/>
+ <body>
+  本页面设置了应用模式，默认将全屏，禁止长按菜单，禁止手势，标准排版，强制图片显示。
+ </body>
+</html>
+```
+* 进入应用模式，打开长按菜单，禁止夜间模式
+```javascript
+<html>
+ <meta name="browsermode" content="application"/>
+ <meta name="nightmode" content="disable"/>
+ <script language="text/javascript">
+   navigator.control.longpressMenu(true);
+ </script>
+ <body>
+   本页面设置了应用模式，但禁止了夜间模式及允许长按菜单
+ </body>
+</html>
+```
+####5.2.4.说明
+<br>
+<br>
+##6.浏览器版本识别
+UC浏览器的识别方式和其他浏览器识别方式一致，可以通过navigator.appVersion变量识别是否UC浏览器及对应的版本。请参考以下例程
+```javascript
+<html>
+<body>
+		<script type="text/javascript">
+			document.write(navigator.appVersion);
+			if (navigator.appVersion.indexOf("UC")!= -1)
+			{
+			  document.write("this is uc browser");
+			}
+		</script>
+</body>
+</html>
+```
+当使用UC浏览器（默认UA）时，页面显示：
+```javascript
+5.0 (Linux; U; Android 2.3.3; zh-cn; samsung Build/GINGERBREAD) UC AppleWebKit/534.31 (KHTML,like Gecko) Mobile Safari/534.31 UC/8.6.0.174
+This is uc browser
+```
+子frame中所有meta不生效<br>
+事件传递到子frame中
