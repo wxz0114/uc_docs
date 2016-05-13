@@ -106,5 +106,43 @@ If (docElm.fullscreenEnabled){
 ```javascript
 <meta name="full-screen" content="yes">
 ```
-#####3.2.5.
-#####3.2.6.
+功能等同于
+```javascript
+Var docElm = document.documentElement;
+docElem.requestFullscreen();
+```
+#####3.2.5.操作设计
+全屏特性目前定义的交互及操作特性与应用全屏是一致的
+#####3.2.6.版本变更历史
+* 8.8变更
+去除8.6/8.7版本中定义的全屏功能的meta标签包括的禁止手势，禁止悬浮框，禁止长按菜单的设计。<br>
+去除了苹果特有的meta支持
+###3.3.手势开关
+####3.3.1.规范状态
+暂无
+####3.3.2.定义
+U3为手机浏览器定义了一些特有的操作方式，这些操作方式包括：
+* 手势：单指前进后退，双指操作(新增/删除/切换tab)
+* 长按菜单
+* 全屏时的悬浮按钮(暂未提供)
+* 翻页按钮
+* 物理菜单键
+提供对手势的控制功能，包括：<br>
+1. 定义浏览器控制对象：navigator.control
+2. 为navigator.control提供手势、悬浮按钮等操作
+```javascript
+Interface control{
+  Boolean gesture(boolean enable/disable);
+  Boolean longpressMenu(boolean enable/disable);
+  Boolean flipbutton()
+  Boolean menu(boolean enable/disable);
+}
+```
+####3.3.3.示例
+####3.3.4.Meta标签
+暂不提供
+####3.3.5.操作设计
+所有设置仅对当前页面有效，也不影响前进后退列表中的网页。<br>
+手势禁止时，在当前页面中手势事件应传递给网页进行处理。通过以下方式达到本页面时会导致无法继续使用该操作：<br>
+1. 使用双指切换从另一个tab切换到被禁止手势事件的当前页面<br>
+2. 使用单指前进后退时遇到被禁止手势事件的当前页面<br>
