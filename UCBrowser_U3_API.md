@@ -51,7 +51,7 @@ readonly attribute DOMString orientation;
     show();
     screen.lockOrientation("portrait");
   </script>
-</html>
+<//html>
 ```
 #####3.1.4.Meta标签
 为了简化调用，可以通过meta对屏幕方向进行设定，效果与使用js调用相关接口是一致的。<br>
@@ -67,3 +67,18 @@ Tab切换：动画按当前也方向，切换后页面按该页面<br>
 前进后退：动画按当前页方向，切换后页面按该页面方向进行方向切换显示<br>
 系统旋屏设置：本功能仅改变一次屏幕设置，并不永久生效。如果用户通过浏览器->设置->转屏设置对屏幕进行设置，则屏幕依据设置变更进行变化，并相应触发屏幕方向事件。
 #####3.1.6.版本变更历史
+####3.2.全屏控制(full screen)
+#####3.2.1.规范状态
+http://dvcs.w3.org/hg/fullscreen/raw-file/tip/Overview.html
+#####3.2.2.定义
+提供对全屏的操纵，包括：<br>
+* 1. 定义在element对象上的进入全屏(requestFullscreen)函数<br>
+* 2. 定义在document对象上的退出全屏(exitFullscreen)函数<br>
+* 3. 定义在document对象上读取全屏状态及当前全屏元素<br>
+* 4. 定义全屏切换事件
+```javascript
+```
+#####3.2.3.
+#####3.2.4.
+#####3.2.5.
+#####3.2.6.
