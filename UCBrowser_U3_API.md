@@ -51,7 +51,7 @@ readonly attribute DOMString orientation;
     show();
     screen.lockOrientation("portrait");
   </script>
-<//html>
+</html>
 ```
 #####3.1.4.Meta标签
 为了简化调用，可以通过meta对屏幕方向进行设定，效果与使用js调用相关接口是一致的。<br>
@@ -77,8 +77,34 @@ http://dvcs.w3.org/hg/fullscreen/raw-file/tip/Overview.html
 * 3. 定义在document对象上读取全屏状态及当前全屏元素<br>
 * 4. 定义全屏切换事件
 ```javascript
+partial interface Element{
+  void requestFullscreen();
+}
+
+partial interface Document {
+  readonly attribute boolean fullscreenEnabled;
+	Readonly attribute Element fullscreenElement;
+  void exitFullscreen();
+}
 ```
-#####3.2.3.
-#####3.2.4.
+#####3.2.3.示例
+```javascript
+<!DOCTYPE html>
+<html>
+  <script language="text/javascript">
+    var docElm = document.documentElement;
+    if (docElm.requestFullscreen) {
+      docElm.requestFullscreen();
+}
+If (docElm.fullscreenEnabled){
+  docElem.exitFullscreen();
+}
+  </script>
+</html>
+```
+#####3.2.4.Meta标签
+```javascript
+<meta name="full-screen" content="yes">
+```
 #####3.2.5.
 #####3.2.6.
