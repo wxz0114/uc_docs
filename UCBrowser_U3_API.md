@@ -29,3 +29,11 @@ http://www.w3.org/TR/screen-orientation/
 1. 定义screen对象，可读取当前屏幕的方向
 2. 通过screen对象可对屏幕方向进行设置
 3. 定义屏幕方向改变时的事件处理函数。
+```javascript
+interface screen {
+readonly attribute DOMString orientation;
+    boolean lockOrientation (DOMtring orientation);
+		 void    unlockOrientation ();
+    attribute Function onorientationchange;
+};
+```
