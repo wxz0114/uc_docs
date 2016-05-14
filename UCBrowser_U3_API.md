@@ -168,7 +168,7 @@ docElem.requestFullscreen();
 <h3 id="3.2.5">3.2.5.操作设计</h3>
 全屏特性目前定义的交互及操作特性与应用全屏是一致的
 <h3 id="3.2.6">3.2.6.版本变更历史</h3>
-* 8.8变更<br>
+8.8变更<br>
 去除8.6/8.7版本中定义的全屏功能的meta标签包括的禁止手势，禁止悬浮框，禁止长按菜单的设计。<br>
 去除了苹果特有的meta支持
 <h2 id="3.3">3.3.手势开关</h2>
@@ -245,8 +245,7 @@ interface layout{
 readonly attribute DOMString layoutmode;
 };
 ```
-* 定义了
-Layoutmode的取值为fitscreen(对应适应屏幕)或standard(对应标准模式)<br>
+定义了Layoutmode的取值为fitscreen(对应适应屏幕)或standard(对应标准模式)<br>
 Onlayoutchange函数将在用户通过菜单切换排版方式时被调用，对每个窗口通知其网页排版发生了变化。<br>
 当时用meta标签定义了该页面的排版方式后，该页面的排版将不再受用户的菜单排版方式选择影响。<br>
 <h3 id="4.2.3">4.2.3.示例</h3>
