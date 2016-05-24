@@ -423,11 +423,7 @@ Img标签：
 <h3 id="4.5.2">4.5.2.标签</h3>
 Meta标签：
 ```javascript
-<meta name="" content="force"/>
-```
-Img标签：
-```javascript
-<img src="..." show="force">
+<meta name="wap-font-scale" content="no"/>
 ```
 <h3 id="4.5.3">4.5.3.示例</h3>
 * 关闭字体放大功能
@@ -440,7 +436,7 @@ Img标签：
 </html>
 ```
 <h3 id="4.5.4">4.5.4.说明</h3>
-在应用模式下，自动强制页面进入整页图片强制显示。整页图片强制显示仅对当前页面生效，对页面内的iframe/frame不生效，也不影响前进后退的页面<br>
+<br>
 <h3 id="4.6">4.6.极速模式控制</h3>
 <br>
 <br>
